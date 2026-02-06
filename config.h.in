@@ -1,0 +1,8 @@
+#ifndef _TUI_CONFIG_H_
+#define _TUI_CONFIG_H_
+
+#define VERSION @PROJECT_VERSION@
+
+#cmakedefine LOG_ENABLED
+
+#endif /* _TUI_CONFIG_H_ */
