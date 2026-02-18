@@ -88,6 +88,11 @@ void twidget_set_geometry(TWidget *self, TRect r)
     }
 }
 
+TSize twidget_calc_min_size(TWidget *self)
+{
+    return self->min_size;
+}
+
 bool twidget_emit_singal(TWidget *self, const char *name, void *data)
 {
     bool sig_handled = false;
@@ -168,6 +173,15 @@ void set_geometry(TWidget *self, TRect r)
         return;
     }
     wcls->set_geometry(self, r);
+}
+
+TSize calc_min_size(TWidget *self)
+{
+    const twidget_class *wcls = _class_of(self);
+    if (wcls == NULL) {
+        return TSIZE(0, 0);
+    }
+    return wcls->calc_min_size(self);
 }
 
 static void _init_class(class *cls)
