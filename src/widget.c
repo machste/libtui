@@ -21,6 +21,8 @@ void twidget_init(TWidget *self)
 {
     self->win = NULL;
     self->geo = TRECT(0, 0, 0, 0);
+    self->min_size = TSIZE(0, 0);
+    self->max_size = TSIZE(0, 0);
     self->parent = NULL;
     self->signals = NULL;
 }
@@ -86,6 +88,11 @@ void twidget_set_geometry(TWidget *self, TRect r)
         mvwin(self->win, r.y, r.x);
         wresize(self->win, r.h, r.w);
     }
+}
+
+TSize twidget_calc_min_size(TWidget *self)
+{
+    return self->min_size;
 }
 
 bool twidget_emit_singal(TWidget *self, const char *name, void *data)
@@ -168,6 +175,15 @@ void set_geometry(TWidget *self, TRect r)
         return;
     }
     wcls->set_geometry(self, r);
+}
+
+TSize calc_min_size(TWidget *self)
+{
+    const twidget_class *wcls = _class_of(self);
+    if (wcls == NULL) {
+        return TSIZE(0, 0);
+    }
+    return wcls->calc_min_size(self);
 }
 
 static void _init_class(class *cls)
