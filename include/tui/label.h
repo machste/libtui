@@ -7,6 +7,8 @@
 typedef struct TLabel {
     TWidget;
     char *text;
+    TAlign align_x;
+    TAlign align_y;
 } TLabel;
 
 

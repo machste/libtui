@@ -10,6 +10,12 @@
 #define TKEY_PPAGE              0523
 
 
+typedef enum {
+    TALIGN_START,
+    TALIGN_CENTER,
+    TALIGN_END
+} TAlign;
+
 typedef struct TSize {
     int h;
     int w;

@@ -22,6 +22,8 @@ void tlabel_init(TLabel *self, const char *text)
     object_init(self, TLabelCls);
     twidget_init(self);
     self->text = strdup(text);
+    self->align_x = TALIGN_START;
+    self->align_y = TALIGN_START;
 }
 
 void tlabel_vinit(TLabel *self, va_list va)
@@ -55,7 +57,38 @@ void tlabel_set_text(TLabel *self, const char *text)
 
 void tlabel_draw(TLabel *self)
 {
-    mvprintw(self->geo.y, self->geo.x, self->text);
+    int y, x;
+    TRect g = self->geo;
+    // Calculate vertical alignment
+    if (self->align_y == TALIGN_CENTER) {
+        int space = g.h - 1;
+        if (space > 0) {
+            y = g.y + space / 2;
+        } else {
+            // There is no space left to center the content!
+            y = g.y;
+        }
+    } else if (self->align_y == TALIGN_END) {
+        y = g.y + g.h - 1;
+    } else {
+        y = g.y;
+    }
+    // Calculate horizontal alignment
+    if (self->align_x == TALIGN_CENTER) {
+        int space = g.w - strlen(self->text);
+        if (space > 0) {
+            x = g.x + space / 2;
+        } else {
+            // There is no space left to center the content!
+            x = g.x;
+        }
+    } else if (self->align_x == TALIGN_END) {
+        x = g.x + g.w - strlen(self->text);
+    } else {
+        x = g.x;
+    }
+    // Place text at the right position
+    mvprintw(y, x, self->text);
 }
 
 static int _cmp(const TLabel *self, const TLabel *other)
