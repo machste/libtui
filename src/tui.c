@@ -106,8 +106,13 @@ void tui_set_content(TWidget *widget)
 
 void tui_start(void)
 {
+    // Perform a "sacrificial" refresh on the not used stanard screen
+    refresh();
+    // Draw the main layout
     redraw_main_layout();
+    // Run the main loop
     mloop_run();
+    // Clean up after the main loop is done
     endwin();
 }
 
