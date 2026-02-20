@@ -2,6 +2,7 @@
 #define _TUI_DEFINITIONS_H_
 
 #define TKEY_ESC                  27
+#define TKEY_SPACE                32
 #define TKEY_DOWN               0402
 #define TKEY_UP                 0403
 #define TKEY_LEFT               0404
