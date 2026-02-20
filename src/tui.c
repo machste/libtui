@@ -32,7 +32,7 @@ static void sigwinch_handler(int sig)
     }
 }
 
-static void draw_main_layout(void)
+static void redraw_main_layout(void)
 {
     if (main_layout == NULL) {
         return;
@@ -40,14 +40,7 @@ static void draw_main_layout(void)
     TRect r = (TRect){ .y = 0, .x = 0};
     getmaxyx(stdscr, r.h, r.w);
     set_geometry(main_layout, r);
-    draw(main_layout);
-    refresh();
-}
-
-static void redraw_main_layout(void)
-{
-    clear();
-    draw_main_layout();
+    tui_update(main_layout);
 }
 
 static void resize_event_cb(MlEvent *event, void *arg)
@@ -113,7 +106,7 @@ void tui_set_content(TWidget *widget)
 
 void tui_start(void)
 {
-    draw_main_layout();
+    redraw_main_layout();
     mloop_run();
     endwin();
 }
@@ -122,6 +115,13 @@ void tui_stop(void)
 {
     mloop_stop();
 }
+
+void tui_update(TWidget *widget)
+{
+    draw(widget);
+    doupdate();
+}
+
 
 void tui_connect_signal(const char *name, tsignal_cb cb)
 {

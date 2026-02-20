@@ -41,10 +41,13 @@ void ttitlebar_delete(TTitleBar *self)
 
 void ttitlebar_draw(TTitleBar *self)
 {
-    attron(A_REVERSE);
-    mvprintw(self->geo.y, self->geo.x, self->title);
-    hline(' ', self->geo.w);
-    attroff(A_REVERSE);
+    TSize s = twidget_size(self);
+    wclear(self->win);
+    wattron(self->win, A_REVERSE);
+    mvwprintw(self->win, 0, 0, self->title);
+    whline(self->win, ' ', s.w);
+    wattroff(self->win, A_REVERSE);
+    wnoutrefresh(self->win);
 }
 
 static void _init_class(class *cls)

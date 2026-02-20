@@ -57,38 +57,30 @@ void tlabel_set_text(TLabel *self, const char *text)
 
 void tlabel_draw(TLabel *self)
 {
-    int y, x;
-    TRect g = self->geo;
+    int y = 0, x = 0;
+    TSize s = twidget_size(self);
     // Calculate vertical alignment
     if (self->align_y == TALIGN_CENTER) {
-        int space = g.h - 1;
+        int space = s.h - 1;
         if (space > 0) {
-            y = g.y + space / 2;
-        } else {
-            // There is no space left to center the content!
-            y = g.y;
+            y = space / 2;
         }
     } else if (self->align_y == TALIGN_END) {
-        y = g.y + g.h - 1;
-    } else {
-        y = g.y;
+        y = s.h - 1;
     }
     // Calculate horizontal alignment
     if (self->align_x == TALIGN_CENTER) {
-        int space = g.w - strlen(self->text);
+        int space = s.w - strlen(self->text);
         if (space > 0) {
-            x = g.x + space / 2;
-        } else {
-            // There is no space left to center the content!
-            x = g.x;
+            x = space / 2;
         }
     } else if (self->align_x == TALIGN_END) {
-        x = g.x + g.w - strlen(self->text);
-    } else {
-        x = g.x;
+        x = s.w - strlen(self->text);
     }
     // Place text at the right position
-    mvprintw(y, x, self->text);
+    wclear(self->win);
+    mvwprintw(self->win, y, x, self->text);
+    wnoutrefresh(self->win);
 }
 
 static int _cmp(const TLabel *self, const TLabel *other)
@@ -101,7 +93,6 @@ static size_t _to_cstr(TLabel *self, char *cstr, size_t size)
     long len = 0;
     len += twidget_to_cstr(self, cstr, size);
     len += snprintf(cstr + len, max(0, size - len), ", text: %s", self->text);
-
     return len;
 }
 

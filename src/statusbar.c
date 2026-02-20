@@ -38,9 +38,12 @@ void tstatusbar_delete(TStatusBar *self)
 
 void tstatusbar_draw(TStatusBar *self)
 {
-    attron(A_REVERSE);
-    mvhline(self->geo.y, self->geo.x, ' ', self->geo.w);
-    attroff(A_REVERSE);
+    TSize s = twidget_size(self);
+    wclear(self->win);
+    wattron(self->win, A_REVERSE);
+    mvwhline(self->win, 0, 0, ' ', s.w);
+    wattroff(self->win, A_REVERSE);
+    wnoutrefresh(self->win);
 }
 
 static void _init_class(class *cls)

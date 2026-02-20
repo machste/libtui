@@ -14,6 +14,8 @@ void tui_set_content(TWidget *widget);
 void tui_start(void);
 void tui_stop(void);
 
+void tui_update(TWidget *widget);
+
 void tui_connect_signal(const char *name, tsignal_cb cb);
 
 #endif /* _TUI_H_ */

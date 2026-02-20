@@ -7,6 +7,7 @@
 #include <masc/pointer.h>
 #include <masc/math.h>
 #include <tui/widget.h>
+#include <tui/utils.h>
 
 
 TWidget *twidget_new(void)
@@ -18,7 +19,8 @@ TWidget *twidget_new(void)
 
 void twidget_init(TWidget *self)
 {
-    self->geo = (TRect){ .y = 0, .x = 0, .h = 0, .w = 0 };
+    self->win = NULL;
+    self->geo = TRECT(0, 0, 0, 0);
     self->parent = NULL;
     self->signals = NULL;
 }
@@ -30,6 +32,7 @@ void twidget_vinit(TWidget *self, va_list va)
 
 void twidget_destroy(TWidget *self)
 {
+    delwin(self->win);
     map_delete(self->signals);
 }
 
@@ -42,13 +45,47 @@ void twidget_delete(TWidget *self)
 
 void twidget_draw(TWidget *self)
 {
-    mvprintw(self->geo.y, self->geo.x, "<%s>", name_of(self));
+    wclear(self->win);
+    mvwprintw(self->win, 0, 0, "<%s>", name_of(self));
+    wnoutrefresh(self->win);
 }
 
+TSize twidget_size(TWidget *self)
+{
+    if (self->win == NULL) {
+        return *(TSize *)&self->geo;
+    }
+    TSize s;
+    getmaxyx(self->win, s.h, s.w);
+    return s;
+}
+
+TRect twidget_geometry(TWidget *self)
+{
+    if (self->win == NULL) {
+        return self->geo;
+    }
+    TRect geo;
+    getbegyx(self->win, geo.y, geo.x);
+    getmaxyx(self->win, geo.h, geo.w);
+    return geo;
+}
 
 void twidget_set_geometry(TWidget *self, TRect r)
 {
-    self->geo = r;
+    TRect old_r = twidget_geometry(self);
+    if (rect_eq(&old_r, &r)) {
+        // Geometry is still the same, there is nothing to do.
+        return;
+    }
+    // If no window has been crated, ...
+    if (self->win == NULL) {
+        // ... create one.
+        self->win = newwin(r.h, r.w, r.y, r.x);
+    } else {
+        mvwin(self->win, r.y, r.x);
+        wresize(self->win, r.h, r.w);
+    }
 }
 
 bool twidget_emit_singal(TWidget *self, const char *name, void *data)
@@ -96,24 +133,12 @@ void twidget_connect_signal(TWidget *self, const char *name, tsignal_cb cb)
     list_append(signal_cbs, pointer_new(cb));
 }
 
-static size_t tsize_to_cstr(TSize *s, char *cstr, size_t size)
-{
-    return snprintf(cstr, size, "%ix%i", s->h, s->w);
-}
-
-static size_t trect_to_cstr(TRect *r, char *cstr, size_t size)
-{
-    long len = 0;
-    len += snprintf(cstr, size, "(%i,%i) ", r->y, r->x);
-    len += tsize_to_cstr(r, cstr + len, max(0, size - len));
-    return len;
-}
-
 size_t twidget_to_cstr(TWidget *self, char *cstr, size_t size)
 {
     long len = 0;
     len += snprintf(cstr, size, "%s ", name_of(self));
-    len += trect_to_cstr(&self->geo, cstr + len, max(0, size - len));
+    TRect g = twidget_geometry(self);
+    len += trect_to_cstr(&g, cstr + len, max(0, size - len));
     return len;
 }
 

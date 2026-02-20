@@ -69,6 +69,7 @@ void tmainlayout_set_geometry(TMainLayout *self, TRect r)
         set_geometry(self->center_widget, TRECT(r.y + 1, r.x, r.h - 2, r.w));
     }
     set_geometry(&self->status_bar, TRECT(r.h - 1, r.x, 1, r.w));
+    self->geo = r;
 }
 
 static void _init_class(class *cls)

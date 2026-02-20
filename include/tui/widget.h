@@ -6,9 +6,11 @@
 #include <tui/definitions.h>
 
 typedef struct TWidget TWidget;
+typedef struct _win_st WINDOW;
 
 struct TWidget {
     Object;
+    WINDOW *win;
     TRect geo;
     TWidget *parent;
     Map *signals;
@@ -25,6 +27,9 @@ void twidget_destroy(TWidget *self);
 void twidget_delete(TWidget *self);
 
 void twidget_draw(TWidget *self);
+
+TSize twidget_size(TWidget *self);
+TRect twidget_geometry(TWidget *self);
 void twidget_set_geometry(TWidget *self, TRect r);
 
 bool twidget_emit_singal(TWidget *self, const char *name, void *data);
