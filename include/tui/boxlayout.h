@@ -27,4 +27,9 @@ void tboxlayout_vinit(TBoxLayout *self, va_list va);
 void tboxlayout_destroy(TBoxLayout *self);
 void tboxlayout_delete(TBoxLayout *self);
 
+void tboxlayout_add(TBoxLayout *self, TWidget *widget);
+
+void tboxlayout_draw(TBoxLayout *self);
+void tboxlayout_geometry(TBoxLayout *self, TRect r);
+
 #endif /* _TUI_BOX_LAYOUT_H_ */

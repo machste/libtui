@@ -40,8 +40,43 @@ void tboxlayout_delete(TBoxLayout *self)
     free(self);
 }
 
+void tboxlayout_add(TBoxLayout *self, TWidget *widget)
+{
+    list_append(&self->children, widget);
+}
+
 void tboxlayout_draw(TBoxLayout *self)
 {
+    Iter i = init(Iter, &self->children);
+    for (TWidget *widget = next(&i); widget != NULL; widget = next(&i)) {
+        draw(widget);
+    }
+    destroy(&i);
+}
+
+void tboxlayout_geometry(TBoxLayout *self, TRect r)
+{
+    size_t n_widgets = len(&self->children);
+    self->geo = r;
+    if (n_widgets == 0) {
+        return;
+    }
+    int space_left = self->dir == TBOX_LAYOUT_DIR_HORIZONTAL ? r.w : r.h;
+    int pos = self->dir == TBOX_LAYOUT_DIR_HORIZONTAL ? r.x : r.y;
+    Iter i = init(Iter, &self->children);
+    for (TWidget *widget = next(&i); widget != NULL; widget = next(&i)) {
+        int space = space_left / n_widgets;
+        if (self->dir == TBOX_LAYOUT_DIR_HORIZONTAL) {
+            set_geometry(widget, TRECT(r.y, pos, r.h, space));
+        } else {
+            set_geometry(widget, TRECT(pos, r.x, space, r.w));
+        }
+        pos += space;
+        space_left -= space;
+        n_widgets--;
+    }
+    destroy(&i);
+
 }
 
 static void _init_class(class *cls)
@@ -63,7 +98,7 @@ static twidget_class _TBoxLayoutCls = {
     .to_cstr = (to_cstr_cb)twidget_to_cstr,
     // Widget Class
     .draw = (draw_cb)tboxlayout_draw,
-    .set_geometry = (set_geometry_cb)twidget_set_geometry
+    .set_geometry = (set_geometry_cb)tboxlayout_geometry
 };
 
 const twidget_class *TBoxLayoutCls = &_TBoxLayoutCls;
