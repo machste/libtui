@@ -17,6 +17,12 @@ typedef enum {
     TALIGN_END
 } TAlign;
 
+typedef enum {
+    TBORDER_NONE,
+    TBORDER_SINGLE,
+    TBORDER_DOUBLE
+} TBorderStyle;
+
 typedef struct TSize {
     int h;
     int w;

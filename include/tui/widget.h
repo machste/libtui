@@ -26,6 +26,7 @@ void twidget_vinit(TWidget *self, va_list va);
 void twidget_destroy(TWidget *self);
 void twidget_delete(TWidget *self);
 
+void twidget_draw_frame(TWidget *self);
 void twidget_draw(TWidget *self);
 
 TSize twidget_size(TWidget *self);

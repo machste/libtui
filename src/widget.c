@@ -43,10 +43,16 @@ void twidget_delete(TWidget *self)
     free(self);
 }
 
+void twidget_draw_frame(TWidget *self)
+{
+    box(self->win, 0, 0);
+}
+
 void twidget_draw(TWidget *self)
 {
     wclear(self->win);
     mvwprintw(self->win, 0, 0, "<%s>", name_of(self));
+    twidget_draw_frame(self);
     wnoutrefresh(self->win);
 }
 

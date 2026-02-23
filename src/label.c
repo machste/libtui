@@ -86,6 +86,8 @@ void tlabel_draw(TLabel *self)
     // Place text at the right position
     wclear(self->win);
     mvwprintw(self->win, y, x, self->text);
+    // Draw the frame
+    twidget_draw_frame(self);
     wnoutrefresh(self->win);
 }
 
