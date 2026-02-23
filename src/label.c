@@ -55,6 +55,12 @@ void tlabel_set_text(TLabel *self, const char *text)
     self->text = strdup(text);
 }
 
+void tlabel_set_align(TLabel *self, TAlign y, TAlign x)
+{
+    self->align_y = y;
+    self->align_x = x;
+}
+
 void tlabel_draw(TLabel *self)
 {
     int y = 0, x = 0;

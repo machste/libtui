@@ -23,6 +23,7 @@ void tlabel_delete(TLabel *self);
 
 const char *tlabel_text(TLabel *self);
 void tlabel_set_text(TLabel *self, const char *text);
+void tlabel_set_align(TLabel *self, TAlign y, TAlign x);
 
 void tlabel_draw(TLabel *self);
 void tlabel_geometry(TLabel *self, TRect r);
