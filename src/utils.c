@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <masc/math.h>
-#include <tui/utils.h>
+#include "utils_internal.h"
 
 
 size_t tsize_to_cstr(TSize *s, char *cstr, size_t size)
@@ -27,3 +27,27 @@ bool rect_eq(TRect *self, TRect *other)
             && self->x == other->x && self->y == other->y;
 }
 
+/* TUI Internal Utilities */
+
+const cchar_t *tlinestyle_char(TLineStyle style, TAxis dir)
+{
+    static cchar_t def_char = { A_NORMAL, L" " };
+    if (dir == TAXIS_Y) {
+        if (style == TLINE_STYLE_SINGLE) {
+            return WACS_VLINE;
+        } else if (style == TLINE_STYLE_THICK) {
+            return WACS_T_VLINE;
+        } else if (style == TLINE_STYLE_DOUBLE) {
+            return WACS_D_VLINE;
+        }
+    } else {
+        if (style == TLINE_STYLE_SINGLE) {
+            return WACS_HLINE;
+        } else if (style == TLINE_STYLE_THICK) {
+            return WACS_T_HLINE;
+        } else if (style == TLINE_STYLE_DOUBLE) {
+            return WACS_D_HLINE;
+        }
+    }
+    return &def_char;
+}

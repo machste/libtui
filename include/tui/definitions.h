@@ -22,6 +22,13 @@ typedef enum {
     TALIGN_END
 } TAlign;
 
+typedef enum {
+    TLINE_STYLE_NONE,
+    TLINE_STYLE_SINGLE,
+    TLINE_STYLE_THICK,
+    TLINE_STYLE_DOUBLE
+} TLineStyle;
+
 typedef struct TSize {
     int h;
     int w;

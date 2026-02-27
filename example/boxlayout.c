@@ -2,6 +2,7 @@
 #include <tui.h>
 #include <tui/label.h>
 #include <tui/boxlayout.h>
+#include <tui/separator.h>
 
 
 static bool key_pressed_cb(TWidget *widget, void *data)
@@ -34,8 +35,10 @@ int main(int argc, char *argv[])
     tboxlayout_add(row1, new_center_label("(1, 3)"));
     tboxlayout_add(vlayout, row1);
     tboxlayout_add(vlayout, new_center_label("(2, 1)"));
+    tboxlayout_add(vlayout, new(TSeparator, TAXIS_X, TLINE_STYLE_DOUBLE));
     TBoxLayout *row3 = new(TBoxLayout, TAXIS_X);
     tboxlayout_add(row3, new_center_label("(3, 1)"));
+    tboxlayout_add(row3, new(TSeparator, TAXIS_Y, TLINE_STYLE_SINGLE));
     tboxlayout_add(row3, new_center_label("(3, 2)"));
     tboxlayout_add(vlayout, row3);
     // Set the content of the main layout
