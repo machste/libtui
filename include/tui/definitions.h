@@ -12,6 +12,11 @@
 
 
 typedef enum {
+    TAXIS_Y,
+    TAXIS_X,
+} TAxis;
+
+typedef enum {
     TALIGN_START,
     TALIGN_CENTER,
     TALIGN_END

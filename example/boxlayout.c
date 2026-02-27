@@ -27,14 +27,14 @@ int main(int argc, char *argv[])
     // Initialise a TUI Application
     tui_init("TUI Example - Box Layout");
     // Create a vertial and horizontal box layout with labels as content
-    TBoxLayout *vlayout = new(TBoxLayout, TBOX_LAYOUT_DIR_VERTIAL);
-    TBoxLayout *row1 = new(TBoxLayout, TBOX_LAYOUT_DIR_HORIZONTAL);
+    TBoxLayout *vlayout = new(TBoxLayout, TAXIS_Y);
+    TBoxLayout *row1 = new(TBoxLayout, TAXIS_X);
     tboxlayout_add(row1, new_center_label("(1, 1)"));
     tboxlayout_add(row1, new_center_label("(1, 2)"));
     tboxlayout_add(row1, new_center_label("(1, 3)"));
     tboxlayout_add(vlayout, row1);
     tboxlayout_add(vlayout, new_center_label("(2, 1)"));
-    TBoxLayout *row3 = new(TBoxLayout, TBOX_LAYOUT_DIR_HORIZONTAL);
+    TBoxLayout *row3 = new(TBoxLayout, TAXIS_X);
     tboxlayout_add(row3, new_center_label("(3, 1)"));
     tboxlayout_add(row3, new_center_label("(3, 2)"));
     tboxlayout_add(vlayout, row3);

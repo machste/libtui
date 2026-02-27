@@ -7,14 +7,14 @@
 #include <tui/boxlayout.h>
 
 
-TBoxLayout *tboxlayout_new(TBoxLayoutDirection dir)
+TBoxLayout *tboxlayout_new(TAxis dir)
 {
     TBoxLayout *self = malloc(sizeof(TBoxLayout));
     tboxlayout_init(self, dir);
     return self;
 }
 
-void tboxlayout_init(TBoxLayout *self, TBoxLayoutDirection dir)
+void tboxlayout_init(TBoxLayout *self, TAxis dir)
 {
     object_init(self, TBoxLayoutCls);
     twidget_init(self);
@@ -24,7 +24,7 @@ void tboxlayout_init(TBoxLayout *self, TBoxLayoutDirection dir)
 
 void tboxlayout_vinit(TBoxLayout *self, va_list va)
 {
-    TBoxLayoutDirection dir = va_arg(va, TBoxLayoutDirection);
+    TAxis dir = va_arg(va, TAxis);
     tboxlayout_init(self, dir);
 }
 
@@ -61,12 +61,12 @@ void tboxlayout_geometry(TBoxLayout *self, TRect r)
     if (n_widgets == 0) {
         return;
     }
-    int space_left = self->dir == TBOX_LAYOUT_DIR_HORIZONTAL ? r.w : r.h;
-    int pos = self->dir == TBOX_LAYOUT_DIR_HORIZONTAL ? r.x : r.y;
+    int space_left = self->dir == TAXIS_X ? r.w : r.h;
+    int pos = self->dir == TAXIS_X ? r.x : r.y;
     Iter i = init(Iter, &self->children);
     for (TWidget *widget = next(&i); widget != NULL; widget = next(&i)) {
         int space = space_left / n_widgets;
-        if (self->dir == TBOX_LAYOUT_DIR_HORIZONTAL) {
+        if (self->dir == TAXIS_X) {
             set_geometry(widget, TRECT(r.y, pos, r.h, space));
         } else {
             set_geometry(widget, TRECT(pos, r.x, space, r.w));

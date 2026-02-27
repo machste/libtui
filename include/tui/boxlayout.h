@@ -5,14 +5,9 @@
 #include <tui/widget.h>
 
 
-typedef enum {
-    TBOX_LAYOUT_DIR_VERTIAL,
-    TBOX_LAYOUT_DIR_HORIZONTAL
-} TBoxLayoutDirection;
-
 typedef struct {
     TWidget;
-    TBoxLayoutDirection dir;
+    TAxis dir;
     List children;
 } TBoxLayout;
 
@@ -20,8 +15,8 @@ typedef struct {
 extern const twidget_class *TBoxLayoutCls;
 
 
-TBoxLayout *tboxlayout_new(TBoxLayoutDirection dir);
-void tboxlayout_init(TBoxLayout *self, TBoxLayoutDirection dir);
+TBoxLayout *tboxlayout_new(TAxis dir);
+void tboxlayout_init(TBoxLayout *self, TAxis dir);
 void tboxlayout_vinit(TBoxLayout *self, va_list va);
 
 void tboxlayout_destroy(TBoxLayout *self);
