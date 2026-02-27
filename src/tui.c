@@ -4,6 +4,7 @@
 #undef filter
 #endif
 
+#include <locale.h>
 #include <signal.h>
 #include <masc.h>
 #include <tui.h>
@@ -75,6 +76,7 @@ void tui_init(const char *name)
 {
     str_init_cstr(&app_name, name);
     // Initialise ncurses
+    setlocale(LC_ALL, "");
     initscr();
     noecho();
     curs_set(0);
